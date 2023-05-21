@@ -1,10 +1,12 @@
 package main
 
 import (
+	"crowfund/handler"
 	"crowfund/user"
 	"fmt"
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -30,11 +32,17 @@ func main() {
 	// }
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
-	userInput := user.RegisterUserInput{}
-	userInput.Name = "sena service"
-	userInput.Occupation = "backend engineer"
-	userInput.Password = "123456789"
-	userService.RegisterUser(userInput)
+	userHandler := handler.NewUserHandler(userService)
+
+	router := gin.Default()
+	api := router.Group("/api/v1/")
+	api.POST("/users", userHandler.RegisterUser)
+	router.Run()
+	// userInput := user.RegisterUserInput{}
+	// userInput.Name = "sena service"
+	// userInput.Occupation = "backend engineer"
+	// userInput.Password = "123456789"
+	// userService.RegisterUser(userInput)
 	// user := user.User{ udah ga make ini yang gw komen
 	// 	Name: "coba dari golang",
 	// }

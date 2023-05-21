@@ -9,7 +9,7 @@ import (
 //service: dependencies dari handler
 //repoository :userstruct akan di save ke db
 type Service interface {
-	RegisterUser(user User) (User, error)
+	RegisterUser(input RegisterUserInput) (User, error)
 }
 
 type service struct {
