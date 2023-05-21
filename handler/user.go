@@ -25,12 +25,16 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&input) //ini supaya kebaca dari format .json ke struct
 
 	if err != nil {
-		c.JSON(http.StatusBadGateway, nil)
+		response := helper.APIResponse("Registered failed ", http.StatusBadRequest, "error", nil) // nil karena ga ada token
+
+		c.JSON(http.StatusBadGateway, response) //jika nil maka response json postman null
 	}
 
 	newUser, err := h.userService.RegisterUser(input)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, nil)
+		response := helper.APIResponse("Registered failed ", http.StatusBadRequest, "error", nil) // nil karena ga ada token
+
+		c.JSON(http.StatusBadRequest, response)
 	}
 	formatter := user.APIFormatter(newUser, "initoken")
 	response := helper.APIResponse("Account success registered", http.StatusOK, "success", formatter)
