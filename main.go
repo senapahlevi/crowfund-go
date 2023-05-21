@@ -29,8 +29,14 @@ func main() {
 
 	// }
 	userRepository := user.NewRepository(db)
-	user := user.User{
-		Name: "coba dari golang",
-	}
-	userRepository.Save(user)
+	userService := user.NewService(userRepository)
+	userInput := user.RegisterUserInput{}
+	userInput.Name = "sena service"
+	userInput.Occupation = "backend engineer"
+	userInput.Password = "123456789"
+	userService.RegisterUser(userInput)
+	// user := user.User{ udah ga make ini yang gw komen
+	// 	Name: "coba dari golang",
+	// }
+	// userRepository.Save(user)
 }
