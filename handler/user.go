@@ -28,11 +28,12 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 		c.JSON(http.StatusBadGateway, nil)
 	}
 
-	user, err := h.userService.RegisterUser(input)
+	newUser, err := h.userService.RegisterUser(input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, nil)
 	}
-	response := helper.APIResponse("Account success registered", http.StatusOK, "success", user)
+	formatter := user.APIFormatter(newUser, "initoken")
+	response := helper.APIResponse("Account success registered", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
 
 }
