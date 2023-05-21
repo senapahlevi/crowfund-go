@@ -38,6 +38,7 @@ func main() {
 	api := router.Group("/api/v1/")
 	api.POST("/users", userHandler.RegisterUser)
 	router.Run()
+
 	// userInput := user.RegisterUserInput{}
 	// userInput.Name = "sena service"
 	// userInput.Occupation = "backend engineer"

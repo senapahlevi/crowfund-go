@@ -1,17 +1,5 @@
 package helper
 
-// format nya seperti ini sesuai di video
-// 	"meta" : {
-// 		"code":
-// 		"message":  ""
-// 		"status":  ""
-// 	},
-// 	"data" : {
-// 		"name" : ,
-// 		"occupation" : ,
-// 		"token" : ,
-// 		"email" : ,dll
-// 	}
 type Response struct {
 	Meta Meta        `json:"meta"` // biar huruf kecil sesuai video
 	Data interface{} `json:"data"` // biar huruf kecil sesuai video dan interface supaya flexibel mau "data" :{[]} juga bisa
@@ -30,9 +18,23 @@ func APIResponse(message string, code int, status string, data interface{}) Resp
 		Code:    code,
 		Status:  status,
 	}
+
 	jsonResponse := Response{
 		Meta: meta,
 		Data: data,
 	}
+
 	return jsonResponse
 }
+
+// 	"meta" : {
+// 		"code":
+// 		"message":  ""
+// 		"status":  ""
+// 	},
+// 	"data" : {
+// 		"name" : ,
+// 		"occupation" : ,
+// 		"token" : ,
+// 		"email" : ,dll
+// 	}
