@@ -36,6 +36,7 @@ func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
 	newUser, err := s.repository.Save(user)
 
 	if err != nil {
+		// response := helper.APIResponse("Account failed register", http.StatusBadRequest, "failed", nil)
 		return newUser, err
 	}
 	return newUser, nil

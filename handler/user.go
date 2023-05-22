@@ -3,7 +3,6 @@ package handler
 import (
 	"crowfund/helper"
 	"crowfund/user"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,18 +27,16 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	if err != nil {
 		errors := user.FormatError(err)
 		errorMessage := gin.H{"error": errors}
-		response := helper.APIResponse("data Register failed ", http.StatusUnprocessableEntity, "error", errorMessage) // nil karena ga ada token
-
-		c.JSON(http.StatusUnprocessableEntity, response) //jika nil maka response json postman null
+		c.JSON(http.StatusUnprocessableEntity, errorMessage)
+		return
 	}
 
 	newUser, err := h.userService.RegisterUser(input)
 	if err != nil {
-		response := helper.APIResponse("user Registered failed ", http.StatusBadRequest, "error", nil) // nil karena ga ada token
-		c.JSON(http.StatusBadRequest, response)
+		c.JSON(http.StatusBadRequest, err)
+		return
 	}
 
-	fmt.Println("hello woy")
 	formatter := user.FormatUser(newUser, "initoken")
 	response := helper.APIResponse("Account success register", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)

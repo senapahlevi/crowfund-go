@@ -34,6 +34,17 @@ func main() {
 	userService := user.NewService(userRepository)
 	userHandler := handler.NewUserHandler(userService)
 
+	userByEmail, err := userRepository.FindByEmail("sena3il@gmaisl.com")
+	if err != nil {
+		fmt.Println(err.Error())
+
+	}
+	if userByEmail.ID == 0 {
+		fmt.Println("maaf ga ketemu")
+	}
+
+	fmt.Println(userByEmail.Name, "hello")
+
 	router := gin.Default()
 	api := router.Group("/api/v1/")
 	api.POST("/users", userHandler.RegisterUser)
