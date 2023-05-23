@@ -76,3 +76,7 @@ func (h *userHandler) Login(c *gin.Context) {
 	response := helper.APIResponse("Login success yeay", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
 }
+
+func (h *userHandler) Login(c *gin.Context) {
+
+}
