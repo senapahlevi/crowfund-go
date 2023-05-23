@@ -21,7 +21,7 @@ func FormatUser(user User, token string) UserFormatter {
 	return formatter
 }
 
-func FormatError(err error) []string {
+func FormatValidationError(err error) []string {
 	var errors []string // buat nampung error make slice
 	for _, e := range err.(validator.ValidationErrors) {
 		errors = append(errors, e.Error())

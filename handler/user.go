@@ -25,7 +25,7 @@ func (h *userHandler) RegisterUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&input) //ini supaya kebaca dari format .json ke struct
 
 	if err != nil {
-		errors := user.FormatError(err)
+		errors := user.FormatValidationError(err)
 		errorMessage := gin.H{"error": errors}
 		c.JSON(http.StatusUnprocessableEntity, errorMessage)
 		return
@@ -51,4 +51,28 @@ func (h *userHandler) Login(c *gin.Context) {
 	//input struct passing service
 	//di service mencari bantuan dgn bantuan repository user dengan email x
 	//mencocokan passowrd
+	var input user.LoginInput
+
+	err := c.ShouldBindJSON(&input) //ini supaya kebaca dari format .json ke struct
+
+	if err != nil {
+		errors := user.FormatValidationError(err)
+		errorMessage := gin.H{"error": errors}
+		response := helper.APIResponse("Login Failed", http.StatusUnprocessableEntity, "failed", errorMessage)
+
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	loggedinUser, err := h.userService.Login(input)
+
+	if err != nil {
+		errorMessage := gin.H{"errors": err.Error()}
+		response := helper.APIResponse("Login Failed", http.StatusUnprocessableEntity, "failed", errorMessage)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	formatter := user.FormatUser(loggedinUser, "initoken")
+	response := helper.APIResponse("Login success yeay", http.StatusOK, "success", formatter)
+	c.JSON(http.StatusOK, response)
 }

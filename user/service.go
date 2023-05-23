@@ -1,6 +1,8 @@
 package user
 
 import (
+	"errors"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -10,6 +12,7 @@ import (
 //repoository :userstruct akan di save ke db
 type Service interface {
 	RegisterUser(input RegisterUserInput) (User, error)
+	Login(input LoginInput) (User, error)
 }
 
 type service struct {
@@ -40,4 +43,27 @@ func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
 		return newUser, err
 	}
 	return newUser, nil
+}
+func (s *service) Login(input LoginInput) (User, error) {
+	user := User{}
+
+	email := input.Email
+	password := input.Password
+
+	user, err := s.repository.FindByEmail(email)
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		return user, errors.New("email user not found ")
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)) //dibandingkan db dan inputan user password sekarang di form
+
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
