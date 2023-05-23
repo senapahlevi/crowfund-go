@@ -79,6 +79,6 @@ func (s *service) IsEmailAvailableInput(input CheckEmailInput) (bool, error) {
 	if user.ID == 0 {
 		return true, nil
 	}
-	return false, nil //nilai defaul
+	return false, nil //nilai default karena is_available : false (email udah ada)
 
 }
