@@ -124,7 +124,7 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 	}
 	//harusnya dapat dari jwt tapi sementara 1 dulu
 	userID := 1
-	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
+	path := fmt.Sprintf("images/%d-%s", userID, file.Filename) //bikin folder local di golang
 
 	err = c.SaveUploadedFile(file, path)
 	if err != nil {
