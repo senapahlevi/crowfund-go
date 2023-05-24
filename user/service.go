@@ -82,3 +82,17 @@ func (s *service) IsEmailAvailableInput(input CheckEmailInput) (bool, error) {
 	return false, nil //nilai default karena is_available : false (email udah ada)
 
 }
+func (s *service) SaveAvatar(ID int, fileLocation string) (User, error) {
+
+	user, err := s.repository.FindByID(ID)
+	if err != nil {
+		return user, err
+	}
+	user.AvatarFileName = fileLocation
+	updatedUser, err := s.repository.Update(user)
+	if err != nil {
+		return updatedUser, err
+	}
+	return updatedUser, nil //nilai default karena is_available : false (email udah ada)
+
+}
