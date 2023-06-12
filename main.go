@@ -33,10 +33,9 @@ func main() {
 	// }
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
-	userHandler := handler.NewUserHandler(userService)
 	authService := auth.NewService()
-	fmt.Println(authService.GenerateToken(1000)) // print token
-	fmt.Println("hello ini ")                    // print token
+	userHandler := handler.NewUserHandler(userService, authService)
+	// fmt.Println(authService.GenerateToken(1000)) // print token
 	// userByEmail, err := userRepository.FindByEmail("sena3il@gmaisl.com")
 	// if err != nil {
 	// 	fmt.Println(err.Error())
