@@ -41,6 +41,19 @@ func main() {
 	// 	fmt.Println(err.Error())
 
 	// }
+	//test token
+
+	token, err := authService.ValidateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNn0.1r0MdmrpNNBygCcchvfjGKyvqX7-2cAH9D8xyIHXH_8")
+	if err != nil {
+		fmt.Println("error tokenee hello ")
+
+	}
+	if token.Valid {
+		fmt.Println("hello neee token valid")
+	} else {
+		fmt.Println("hello neee token ga validdd!")
+
+	}
 	// if userByEmail.ID == 0 {
 	// 	fmt.Println("maaf ga ketemu")
 	// }
