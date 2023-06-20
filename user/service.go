@@ -15,6 +15,7 @@ type Service interface {
 	Login(input LoginInput) (User, error)
 	IsEmailAvailableInput(input CheckEmailInput) (bool, error)
 	SaveUserAvatar(ID int, fileLocation string) (User, error)
+	GetUserByID(ID int) (User, error)
 }
 
 type service struct {
@@ -96,4 +97,16 @@ func (s *service) SaveUserAvatar(ID int, fileLocation string) (User, error) {
 	}
 	return updatedUser, nil //nilai default karena is_available : false (email udah ada)
 
+}
+
+func (s *service) GetUserByID(ID int) (User, error) {
+	//digunakan untuk middleware
+	user, err := s.repository.FindByID(ID)
+	if err != nil {
+		return user, nil
+	}
+	if user.ID == 0 {
+		return user, errors.New("no user found with that ID")
+	}
+	return user, nil
 }
