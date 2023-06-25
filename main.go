@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -110,7 +111,30 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 		if len(arrayToken) == 2 {
 			tokenString = arrayToken[1]
 		}
-		// token, err :=
+		//
+		token, err := authService.ValidateToken(tokenString)
+		if err != nil {
+			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
+		}
+		//claim itu ambil data yang dalem token nya itu (payload)
+		claim, ok := token.Claims.(jwt.MapClaims)
+
+		if !ok || !token.Valid { //jika ga oke atau token ga valid
+			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
+		}
+		//jika lancar bisa ambil userid dari claims(isi data di dalem token/payload)
+		userID := int(claim["user_id"].(float64)) //default float
+		user, err := userService.GetUserByID(userID)
+		if err != nil {
+			response := helper.APIResponse("Unauthorized", http.StatusUnauthorized, "error", nil)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
+		}
+		c.Set("currentUser", user) //jadi user saat ini login
 	}
 }
 
