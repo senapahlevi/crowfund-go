@@ -140,7 +140,11 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 		return
 	}
 	//harusnya dapat dari jwt tapi sementara 1 dulu
-	userID := 1
+	// userID := 1
+
+	currentUser := c.MustGet("currentUser").(user.User) //balikan default interface karena c.Set("currentUser", user) //typenya user User //jadi user saat ini login dan dapet informasi payloadnya kayak ID user, name ,dll
+
+	userID := currentUser.ID
 	path := fmt.Sprintf("images/%d-%s", userID, file.Filename) //bikin folder local di golang
 
 	err = c.SaveUploadedFile(file, path)

@@ -134,7 +134,7 @@ func authMiddleware(authService auth.Service, userService user.Service) gin.Hand
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
-		c.Set("currentUser", user) //jadi user saat ini login
+		c.Set("currentUser", user) //jadi user saat ini login dan dapet informasi payloadnya kayak ID user, name ,dll
 	}
 }
 
